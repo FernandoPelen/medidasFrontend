@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Container, Heading, Box, Input, Button, Text, Image, useColorModeValue } from "@chakra-ui/react";
+import { Container, Heading, Box, Input, Button, Text, Image } from "@chakra-ui/react";
 import Layout from "../components/layouts/article";
 
 const Home = () => {

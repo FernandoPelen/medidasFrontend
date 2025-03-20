@@ -18,7 +18,8 @@ const AdminPanel = () => {
 
   useEffect(() => {
     fetchAdministradores();
-  }, []);
+  }, [fetchAdministradores]);
+  
 
   const fetchAdministradores = async () => {
     try {
