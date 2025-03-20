@@ -19,16 +19,18 @@ const AdminPanel = () => {
   useEffect(() => {
     fetchAdministradores();
   }, []);
-  
 
   const fetchAdministradores = async () => {
     try {
       const response = await axios.get("https://web-production-96b2.up.railway.app/administradores");
-      setAdministradores(response.data);
+      console.log("Datos recibidos:", response.data); // Verifica la estructura de la API
+      setAdministradores(Array.isArray(response.data.administradores) ? response.data.administradores : []);
     } catch (error) {
       toast({ title: "Error", description: "No se pudieron cargar los administradores", status: "error" });
+      setAdministradores([]); // Asegura que no quede undefined
     }
   };
+  
 
   const handleOpen = (admin = null) => {
     setSelectedAdmin(admin);
@@ -77,21 +79,20 @@ const AdminPanel = () => {
         <Heading as="h3" fontSize="2xl" mb={6} textAlign="center">
           Administradores
         </Heading>
-        
+
         <Flex justify="end" mb={4}>
           <Button leftIcon={<AddIcon />} colorScheme="blue" onClick={() => handleOpen()}>
             Agregar Administrador
           </Button>
         </Flex>
 
-        <Card w="full" overflowX="auto" boxShadow="lg" borderRadius="lg"  minWidth="100%">
+        <Card w="full" overflowX="auto" boxShadow="lg" borderRadius="lg" minWidth="100%">
           <CardBody>
             <Box overflowX="auto">
               <Table variant="striped" colorScheme="gray">
                 <Thead bg="gray.200">
                   <Tr>
                     <Th>Nombre</Th>
-                   
                     <Th display={{ base: "none", md: "table-cell" }}>Teléfono</Th>
                     <Th>Rol</Th>
                     <Th display={{ base: "none", md: "table-cell" }}>Fecha Creación</Th>
@@ -99,31 +100,31 @@ const AdminPanel = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {administradores.map((admin) => (
-                    <Tr key={admin.id}>
-                      <Td>{admin.nombre}</Td>
-                    
-                      <Td display={{ base: "none", md: "table-cell" }}>{admin.telefono}</Td>
-                      <Td>{admin.rol}</Td>
-                      <Td display={{ base: "none", md: "table-cell" }}>{admin.fecha_creacion}</Td>
-                      <Td>
-                        <Flex gap={2} justify="center" wrap="wrap">
-                          <IconButton
-                            icon={<EditIcon />}
-                            colorScheme="yellow"
-                            size="sm"
-                            onClick={() => handleOpen(admin)}
-                          />
-                          <IconButton
-                            icon={<DeleteIcon />}
-                            colorScheme="red"
-                            size="sm"
-                            onClick={() => handleDelete(admin.id)}
-                          />
-                        </Flex>
-                      </Td>
-                    </Tr>
-                  ))}
+                  {Array.isArray(administradores) &&
+                    administradores.map((admin) => (
+                      <Tr key={admin.id}>
+                        <Td>{admin.nombre}</Td>
+                        <Td display={{ base: "none", md: "table-cell" }}>{admin.telefono}</Td>
+                        <Td>{admin.rol}</Td>
+                        <Td display={{ base: "none", md: "table-cell" }}>{admin.fecha_creacion}</Td>
+                        <Td>
+                          <Flex gap={2} justify="center" wrap="wrap">
+                            <IconButton
+                              icon={<EditIcon />}
+                              colorScheme="yellow"
+                              size="sm"
+                              onClick={() => handleOpen(admin)}
+                            />
+                            <IconButton
+                              icon={<DeleteIcon />}
+                              colorScheme="red"
+                              size="sm"
+                              onClick={() => handleDelete(admin.id)}
+                            />
+                          </Flex>
+                        </Td>
+                      </Tr>
+                    ))}
                 </Tbody>
               </Table>
             </Box>

@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useRouter } from "next/router";
-import { Box, Button, Input, FormControl, FormLabel, Heading, useToast, Text } from "@chakra-ui/react";
+import { Box, Button, Input, FormControl, FormLabel, Heading, useToast, Text, Image } from "@chakra-ui/react";
 import axios from "axios";
 import AuthContext from "../components/authContext";
 
@@ -22,11 +22,9 @@ const Login = () => {
       if (response.status === 200 && response.data.admin) {
         const { admin } = response.data;
         
-        login(admin); // Usar el contexto global de autenticación
-
+        login(admin);
         toast({ title: "Inicio de sesión exitoso", status: "success" });
-
-        router.push("/"); // Redirigir a la página principal
+        router.push("/");
       } else {
         throw new Error("Credenciales incorrectas");
       }
@@ -37,21 +35,32 @@ const Login = () => {
   };
 
   return (
-    <Box w="400px" p={6} boxShadow="lg" borderRadius="lg" bg="white" mx="auto" mt={10}>
-      <Heading textAlign="center" mb={4}>Iniciar Sesión</Heading>
-      <form onSubmit={handleSubmit}>
-        <FormControl mb={3}>
-          <FormLabel>Email</FormLabel>
-          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </FormControl>
-        <FormControl mb={3}>
-          <FormLabel>Contraseña</FormLabel>
-          <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </FormControl>
-        <Button type="submit" colorScheme="blue" width="full">Ingresar</Button>
-      </form>
-
-      {error && <Text color="red.500" mt={4}>{error}</Text>}
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height="100vh"
+      bg="gray.100"
+      _dark={{ bg: "gray.800" }}
+    >
+      <Box w="400px" p={6} boxShadow="lg" borderRadius="lg" bg="white" _dark={{ bg: "gray.700" }} textAlign="center">
+        {/* Logo agregado arriba del formulario */}
+        <Image src="/images/logomiranda.png" alt="Logo Miranda" mx="auto" mb={4} boxSize="100px" />
+        
+        <Heading textAlign="center" mb={4}>Iniciar Sesión</Heading>
+        <form onSubmit={handleSubmit}>
+          <FormControl mb={3}>
+            <FormLabel>Email</FormLabel>
+            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </FormControl>
+          <FormControl mb={3}>
+            <FormLabel>Contraseña</FormLabel>
+            <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </FormControl>
+          <Button type="submit" colorScheme="blue" width="full">Ingresar</Button>
+        </form>
+        {error && <Text color="red.500" mt={4}>{error}</Text>}
+      </Box>
     </Box>
   );
 };

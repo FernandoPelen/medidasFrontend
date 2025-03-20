@@ -9,37 +9,40 @@ import { Analytics } from "@vercel/analytics/react";
 if (typeof window !== "undefined") {
   window.history.scrollRestoration = "manual";
 }
-
 function Website({ Component, pageProps, router }) {
   const isLoginPage = router.pathname === "/login"; // Detectar si estamos en Login
 
   return (
     <AuthProvider>
-      {isLoginPage ? (
-     
-        <Component {...pageProps} key={router.route} />
-      ) : (
-        <Chakra cookies={pageProps.cookies}>
-          <Fonts />
-          <Payhip />
-          <Layout router={router}>
-            <AnimatePresence
-              mode="wait"
-              initial={true}
-              onExitComplete={() => {
-                if (typeof window !== "undefined") {
-                  window.scrollTo({ top: 0 });
-                }
-              }}
-            >
-              <Component {...pageProps} key={router.route} />
-            </AnimatePresence>
-            <Analytics />
-          </Layout>
-        </Chakra>
-      )}
+      <Chakra cookies={pageProps.cookies}>
+        {isLoginPage ? (
+          <Component {...pageProps} key={router.route} />
+        ) : (
+          <>
+            <Fonts />
+            <Payhip />
+            <Layout router={router}>
+              <AnimatePresence
+                mode="wait"
+                initial={true}
+                onExitComplete={() => {
+                  if (typeof window !== "undefined") {
+                    window.scrollTo({ top: 0 });
+                  }
+                }}
+              >
+                <Component {...pageProps} key={router.route} />
+              </AnimatePresence>
+              <Analytics />
+            </Layout>
+          </>
+        )}
+      </Chakra>
     </AuthProvider>
   );
 }
+
+
+
 
 export default Website;
