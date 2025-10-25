@@ -11,7 +11,7 @@
     "lint": "next lint || true"
   },
   "engines": {
-    "node": "18.x"
+    "node": "22.x"
   },
   "keywords": [],
   "author": "E. miranda",
